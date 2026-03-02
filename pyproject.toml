@@ -13,7 +13,8 @@ dependencies = [
     "litellm>=1.0",
     "pymupdf4llm>=0.0.17",
     "python-docx>=1.1",
-    "langchain-text-splitters>=0.3",
+    "langchain-text-splitters>=0.3,<0.4",
+    "numpy<2",
     "openai>=1.0",
     "chromadb>=0.5",
     "structlog>=24.0",
@@ -23,7 +24,8 @@ dependencies = [
 
 [project.optional-dependencies]
 advanced = [
-    "sentence-transformers>=3.0",
+    "sentence-transformers>=2.2,<3.0",
+    "onnxruntime<1.20.0; sys_platform == 'darwin' and platform_machine == 'x86_64'",
 ]
 retrieval = [
     "cohere>=5.0",
