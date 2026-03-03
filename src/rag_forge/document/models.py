@@ -17,4 +17,6 @@ class Chunk(BaseModel):
     chunk_index: int
     source: str
     page: int | None = None
+    parent_id: str | None = None
+    section_title: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)

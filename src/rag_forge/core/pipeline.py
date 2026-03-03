@@ -23,9 +23,12 @@ class RAGPipeline:
     
     async def ingest(self, path: str) -> int:
         """Load, chunk, embed and store a document. Returns chunk count"""
+        chunks = []
         loader = DocumentLoaderFactory.get_loader(path)
         documents = await loader.load(path)
-        chunks = [chunk for doc in documents for chunk in self._chunker.chunk(doc)]
+        # chunks = [chunk for doc in documents for chunk in self._chunker.chunk(doc)]
+        for doc in documents:
+            chunks.extend(await self._chunker.chunk(doc))
         texts = [chunk.content for chunk in chunks]
         embeddings = await self._embedder.embed(texts)
         await self._vector_store.add(chunks, embeddings)
@@ -49,11 +52,13 @@ class RAGPipeline:
         from rag_forge.embedding.factory import create_embedder
         from rag_forge.vectorstore.factory import create_vector_store
         from rag_forge.generation.llm_client import LiteLLMClient
-        from rag_forge.document.chunker import RecursiveChunker
+        # from rag_forge.document.chunker import RecursiveChunker
+        from rag_forge.document.chunker_factory import create_chunker
 
         embedder = create_embedder(settings)
         vector_store = create_vector_store(settings)
         llm = LiteLLMClient(settings.llm, settings.openai_api_key.get_secret_value())
-        chunker = RecursiveChunker(settings.chunking)
+        # chunker = RecursiveChunker(settings.chunking)
+        chunker = create_chunker(settings, embedder)
         return cls(chunker=chunker, embedder=embedder, vector_store=vector_store, llm=llm)
         

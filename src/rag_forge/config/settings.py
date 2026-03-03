@@ -22,6 +22,9 @@ class ChunkingConfig(BaseModel):
     strategy: str = "recursive"
     chunk_size: int = 512
     chunk_overlap: int = 50
+    semantic_threshold: float = 0.85
+    parent_chunk_size: int = 1024
+    child_chunk_size: int = 256
 
 class Settings(BaseSettings):
     

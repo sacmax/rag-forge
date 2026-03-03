@@ -2,72 +2,84 @@
     {
       "question": "What is the qualifying exam requirement?",
       "answer": "Candidate should have passed Standard XII/HSC or equivalent examination.",
+      "relevant_text": "Candidate should have passed Standard XII/HSC",
       "relevant_chunk_ids": ["fef6a8ff-641a-4ac1-9773-cbadb9ccc4eb"],
       "source": "sample.pdf"
     },
     {
       "question": "How can candidates apply for IPM?",
       "answer": "Eligible candidates should submit their application online.",
+      "relevant_text": "submit their application online",
       "relevant_chunk_ids": ["5afdd39a-f717-4ff0-a4f2-a5bbaa0ac5a5"],
       "source": "sample.pdf"
     },
     {
       "question": "What is the basis of selection?",
       "answer": "Candidates will be selected on the basis of overall performance in Aptitude Test and Personal Assessment.",
+      "relevant_text": "overall performance in the Aptitude Test",
       "relevant_chunk_ids": ["d6e7adf2-7d65-4fa5-a9fb-029e157d0765"],
       "source": "sample.pdf"
     },
     {
       "question": "What are the sections in the Aptitude Test?",
       "answer": "There are three sections: Quantitative Ability MCQ, and other sections.",
+      "relevant_text": "three sections in the Aptitude Test",
       "relevant_chunk_ids": ["6c17fbf8-c1be-4386-ba57-0ec8610d9ae3"],
       "source": "sample.pdf"
     },
     {
       "question": "What is the structure of the Aptitude Test?",
       "answer": "The AT has sections including QA MCQ with specific time durations.",
+      "relevant_text": "The AT will be structured as under",
       "relevant_chunk_ids": ["eee1fe21-e831-4ec8-9c86-046e2ac70dd7"],
       "source": "sample.pdf"
     },
     {
       "question": "What happens in Stage 3 of the admission process?",
       "answer": "The eligible pool for Stage 4 Personal Assessment is created in Stage 3.",
+      "relevant_text": "eligible pool for Stage-4",
       "relevant_chunk_ids": ["05a41a95-d5bc-45c7-af7e-f57453947b7d"],
       "source": "sample.pdf"
     },
     {
       "question": "What is the weightage of Aptitude Test Score in final selection?",
       "answer": "Aptitude Test Score has a weightage of 65 in the final selection.",
+      "relevant_text": "Computation of Aptitude Test Score",
       "relevant_chunk_ids": ["432d9f40-5dbe-4266-b5f4-e8991103eb4d"],
       "source": "sample.pdf"
     },
     {
       "question": "What percentage of seats are reserved for OBC candidates?",
       "answer": "27% of seats are reserved for OBC candidates as per Government of India requirement.",
+      "relevant_text": "Non-Creamy",
       "relevant_chunk_ids": ["daa6482b-0612-4441-8bd0-060315e6a320"],
       "source": "sample.pdf"
     },
     {
       "question": "What is the sanctioned intake for IPM 2021 batch?",
       "answer": "The sanctioned intake for IPM 2021 batch for domestic applicants is 150.",
+      "relevant_text": "IPM 2021 batch (Domestic Applicant)",
       "relevant_chunk_ids": ["6e1ed87a-5455-4918-808a-cba9be2bb44a"],
       "source": "sample.pdf"
     },
     {
       "question": "What are the categories of disability considered for reservation?",
       "answer": "Categories include blindness and low vision, deaf and hard of hearing, locomotor disability.",
+      "relevant_text": "The categories of disability",
       "relevant_chunk_ids": ["f52eed48-6b01-4776-89c5-f823855a32a0"],
       "source": "sample.pdf"
     },
     {
       "question": "What is Stage 4 of the admission process?",
       "answer": "Sufficient number of candidates are shortlisted for Personal Assessment in Stage 4.",
+      "relevant_text": "candidates will be shortlisted for Personal Assessment",
       "relevant_chunk_ids": ["ca2ca156-95b6-4af1-85f0-501ae5bd384f"],
       "source": "sample.pdf"
     },
     {
       "question": "How is the percentage of marks calculated for X and XII standard?",
       "answer": "The percentage of marks obtained in X and XII Standard would be calculated as indicated in Note 2.",
+      "relevant_text": "The percentage of marks obtained by the candidate in X and XII",
       "relevant_chunk_ids": ["ef749961-8558-485b-a819-f5850b3a164a"],
       "source": "sample.pdf"
     }

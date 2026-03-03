@@ -14,7 +14,7 @@ class DocumentLoader(Protocol):
 
 @runtime_checkable
 class TextChunker(Protocol):
-    def chunk(self, document: Document) -> list[Chunk]:
+    async def chunk(self, document: Document) -> list[Chunk]:
         """Split a Document into chunk objects"""
         ...
 
