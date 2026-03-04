@@ -16,8 +16,11 @@ async def evaluate_retrieval(
     """
     hit_rates, mrrs = [], [] 
     for qa in golden_qa:
-        [query_embedding] = await pipeline._embedder.embed([qa["question"]])
-        chunks = await pipeline._vector_store.search(query_embedding, k)
+        if pipeline._retriever:
+            chunks = await pipeline._retriever.search(qa['question'])
+        else:
+            [query_embedding] = await pipeline._embedder.embed([qa["question"]])
+            chunks = await pipeline._vector_store.search(query_embedding, k)
         relevant_text = qa.get("relevant_text", "").lower()
 
         #check which retrieved chunks contain the relevant text
