@@ -30,4 +30,4 @@ data/raw/
 .ipynb_checkpoints/
 
 # OS
-.DS_Store
+.DS_Storedata/chroma_db/
