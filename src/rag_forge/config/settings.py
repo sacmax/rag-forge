@@ -36,6 +36,21 @@ class RetrievalConfig(BaseModel):
     multi_query_n: int = 3  # number of query paraphrases
     rrf_k: int = 60         # higher mean less steep rank penalty
 
+class GuardrailsConfig(BaseModel):
+    relevance_threshold: float = 0.3 # min similarity score to consider a chunk relevant
+    max_query_length: int = 500      # reject queries longer than this
+    enable_scope_check: bool = True  #llm based grounding check on output
+
+class CacheConfig(BaseModel):
+    enabled: bool = False            # toggle semantic cache
+    semantic_threshold: float = 0.95 # cosine similarity for cache hit
+    max_size: int = 1000             # max cached query-response pairs
+    ttl_seconds: int = 3600          #cache entry time to live
+
+class ObservabilityConfig(BaseModel):
+    enable_tracing: bool = False
+    phoenix_endpoint: str = "http://localhost:6006"
+
 class Settings(BaseSettings):
     
     #API keys
@@ -49,6 +64,9 @@ class Settings(BaseSettings):
     vector_store: VectorStoreConfig = VectorStoreConfig()
     chunking: ChunkingConfig = ChunkingConfig()
     retrieval: RetrievalConfig = RetrievalConfig()
+    guardrails: GuardrailsConfig = GuardrailsConfig()
+    cache: CacheConfig = CacheConfig()
+    observability: ObservabilityConfig = ObservabilityConfig()
 
     model_config = {
         "env_file": ".env",
