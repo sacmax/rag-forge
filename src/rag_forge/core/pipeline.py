@@ -14,12 +14,14 @@ class RAGPipeline:
             chunker: TextChunker,
             embedder: Embedder,
             vector_store: VectorStore,
-            llm: LLMClient
+            llm: LLMClient,
+            retriever=None
     ):
         self._chunker = chunker
         self._embedder = embedder
         self._vector_store = vector_store
         self._llm = llm
+        self._retriever = retriever
     
     async def ingest(self, path: str) -> int:
         """Load, chunk, embed and store a document. Returns chunk count"""
@@ -38,8 +40,11 @@ class RAGPipeline:
     async def query(self, question: str, k: int=5) -> RAGResponse:
         """Retrieve relevant chunks and generate a grounded answer"""
         start = time.monotonic()
-        [query_embedding] = await self._embedder.embed([question])
-        chunks = await self._vector_store.search(query_embedding, k)
+        if self._retriever:
+            chunks = await self._retriever.search(question)
+        else:
+            [query_embedding] = await self._embedder.embed([question])
+            chunks = await self._vector_store.search(query_embedding, k)
         prompt = build_rag_prompt(question, chunks)
         answer = await self._llm.complete(prompt)
         citations = [Citation(source=chunk.source, page=chunk.page, chunk_id=chunk.id) for chunk in chunks]
@@ -52,13 +57,25 @@ class RAGPipeline:
         from rag_forge.embedding.factory import create_embedder
         from rag_forge.vectorstore.factory import create_vector_store
         from rag_forge.generation.llm_client import LiteLLMClient
-        # from rag_forge.document.chunker import RecursiveChunker
         from rag_forge.document.chunker_factory import create_chunker
+        from rag_forge.retrieval.retriever import AdvancedRetriever
+        from rag_forge.retrieval.query_transform import HyDETransformer, MultiQueryTransformer
+        from rag_forge.retrieval.reranker import create_reranker
 
         embedder = create_embedder(settings)
         vector_store = create_vector_store(settings)
         llm = LiteLLMClient(settings.llm, settings.openai_api_key.get_secret_value())
-        # chunker = RecursiveChunker(settings.chunking)
         chunker = create_chunker(settings, embedder)
-        return cls(chunker=chunker, embedder=embedder, vector_store=vector_store, llm=llm)
+    
+        query_transformer = None
+        if settings.retrieval.strategy == "hyde":
+            query_transformer = HyDETransformer(llm)
+        elif settings.retrieval.strategy == "multi_query":
+            query_transformer = MultiQueryTransformer(llm, n=settings.retrieval.multi_query_n)
         
+        reranker = create_reranker(settings.retrieval.reranker, cohere_api_key=settings.cohere_api_key.get_secret_value() if settings.cohere_api_key else None)
+
+        retriever = AdvancedRetriever(vector_store, embedder, settings.retrieval, query_transformer=query_transformer, reranker=reranker)
+
+        return cls(chunker=chunker, embedder=embedder, vector_store=vector_store, llm=llm, retriever=retriever)
+

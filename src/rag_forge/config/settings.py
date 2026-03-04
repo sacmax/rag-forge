@@ -26,6 +26,16 @@ class ChunkingConfig(BaseModel):
     parent_chunk_size: int = 1024
     child_chunk_size: int = 256
 
+class RetrievalConfig(BaseModel):
+    strategy: str = "dense" # dense, hybrid, hyde, multi-query
+    k: int = 5              # chunks to retrieve before reranking
+    reranker: str | None = None # cohere, flashrank, cross_encoder, None
+    top_n: int = 3          # chunks passed to llm after reranking
+    use_mmr: bool = False   # apply mmr diversification before llm
+    mmr_lambda: float = 0.5 # 1.0=pure relevance, 0.0=pure diversity
+    multi_query_n: int = 3  # number of query paraphrases
+    rrf_k: int = 60         # higher mean less steep rank penalty
+
 class Settings(BaseSettings):
     
     #API keys
@@ -38,9 +48,11 @@ class Settings(BaseSettings):
     llm: LLMConfig = LLMConfig()
     vector_store: VectorStoreConfig = VectorStoreConfig()
     chunking: ChunkingConfig = ChunkingConfig()
+    retrieval: RetrievalConfig = RetrievalConfig()
 
     model_config = {
         "env_file": ".env",
         "env_nested_delimiter": "__"
     }
+
 
