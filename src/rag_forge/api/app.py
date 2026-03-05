@@ -3,12 +3,14 @@ from fastapi import FastAPI
 from rag_forge.api.routes import health, ingest, query
 from rag_forge.api.middleware import add_middleware
 from rag_forge.api.dependencies import get_pipeline
+from rag_forge.observability.logging import setup_logging
 import structlog
 
 logger = structlog.get_logger()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    setup_logging()
     logger.info("building pipeline...")
     app.state.pipeline = get_pipeline()
     logger.info("pipeline ready")
