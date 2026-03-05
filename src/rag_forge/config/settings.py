@@ -17,6 +17,9 @@ class VectorStoreConfig(BaseModel):
     provider: str = "chroma"
     persist_dir: str = "./data/chroma_db"
     collection_name: str = "rag_forge"
+    dimension: int = 384
+    qdrant_url: str = "http://localhost:6333"
+    qdrant_api_key: str | None = None
 
 class ChunkingConfig(BaseModel):
     strategy: str = "recursive"
