@@ -6,15 +6,19 @@ from rag_forge.core.interfaces import DocumentLoader
 class PDFLoader:
     async def load(self, path: str) -> list[Document]:
         import pymupdf4llm, pymupdf
-
         file_path = Path(path)
         doc = pymupdf.open(file_path)
-        total_pages = doc.page_count
-        content = pymupdf4llm.to_markdown(doc)
-        source = file_path.name
-        file_type = "pdf"
-        metadata = {"total_pages": total_pages}
-        return [Document(content=content, source=source, file_type=file_type, metadata=metadata)]
+        documents = []
+        for page_num in range(doc.page_count):
+            content = pymupdf4llm.to_markdown(doc, pages=[page_num])
+            if content.strip():
+                documents.append(Document(
+                    content=content,
+                    source=file_path.name,
+                    file_type="pdf",
+                    metadata={"page": page_num + 1}
+                ))
+        return documents
 
 class DOCXLoader:
     async def load(self, path: str) -> list[Document]:

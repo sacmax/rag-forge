@@ -27,6 +27,7 @@ class RecursiveChunker:
                 document_id=document.id,
                 chunk_index=i,
                 source=document.source,
+                page=document.metadata.get("page"),
                 metadata={**document.metadata}
             )
             chunks.append(chunk)
@@ -42,7 +43,7 @@ class SemanticChunker:
         # split into sentences
         sentences = [s.strip() for s in document.content.split(". ") if s.strip()]
         if len(sentences) == 1:
-            return [Chunk(content=document.content, document_id=document.id, chunk_index=0, source=document.source, metadata={**document.metadata})]
+            return [Chunk(content=document.content, document_id=document.id, chunk_index=0, source=document.source,page=document.metadata.get("page"), metadata={**document.metadata})]
         
         # embed all sentences in one call
         embeddings = await self._embedder.embed(sentences)
@@ -67,7 +68,7 @@ class SemanticChunker:
         # create chunk objects
         chunks =[]
         for i, text in enumerate(texts):
-            chunks.append(Chunk(content=text, document_id=document.id, chunk_index=i, source=document.source, metadata={**document.metadata}))
+            chunks.append(Chunk(content=text, document_id=document.id, chunk_index=i, source=document.source,page=document.metadata.get("page"), metadata={**document.metadata}))
         return chunks
 
 # Hybrid Chunker
@@ -95,13 +96,13 @@ class HybridChunker:
         child_chunks = []
         global_index = 0
         for i, parent_text in enumerate(parent_texts):
-            parent = Chunk(content=parent_text, document_id=document.id, chunk_index=i, source=document.source, parent_id=None, metadata={**document.metadata})
+            parent = Chunk(content=parent_text, document_id=document.id, chunk_index=i, source=document.source, parent_id=None,page=document.metadata.get("page"), metadata={**document.metadata})
             self._parents[parent.id] = parent
 
         # split each parent into child chunks
             child_texts = self._child_splitter.split_text(parent.content)
             for j, child_text in enumerate(child_texts):
-                child_chunks.append(Chunk(content=child_text, document_id=document.id, chunk_index=global_index, source=document.source, parent_id=parent.id, metadata={**document.metadata}))
+                child_chunks.append(Chunk(content=child_text, document_id=document.id, chunk_index=global_index, source=document.source, parent_id=parent.id,page=document.metadata.get("page"), metadata={**document.metadata}))
                 global_index += 1
         return child_chunks
     
